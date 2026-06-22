@@ -1,0 +1,30 @@
+---
+import { SITE, SOCIALS } from '../config';
+const year = new Date().getFullYear();
+---
+
+<footer class="py-8 border-t border-line text-xs text-fg-dim">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <p>
+      <span class="text-accent">#</span>
+      {SITE.name} · {year}
+    </p>
+    <p class="flex items-center gap-4">
+      {
+        SOCIALS.map((s) => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="me noopener"
+            class="no-underline hover:text-accent transition-colors"
+          >
+            {s.label}
+          </a>
+        ))
+      }
+      <a href="/rss.xml" class="no-underline hover:text-accent transition-colors"
+        >rss</a
+      >
+    </p>
+  </div>
+</footer>
