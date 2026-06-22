@@ -25,9 +25,37 @@ export const SITE = {
 
 /** Social links shown in the hero. Remove any you don't want. */
 export const SOCIALS: { label: string; href: string }[] = [
-  { label: 'github', href: 'https://github.com/yourusername' },
-  { label: 'x', href: 'https://x.com/yourusername' },
-  { label: 'email', href: 'mailto:you@example.com' },
+  { label: 'github', href: 'https://github.com/YogeshChebrolu' },
+  { label: 'x', href: 'https://x.com/yogesh_chebrolu' },
+  { label: 'email', href: 'mailto:chebroluyogesh25@gmail.com' },
+];
+
+/** Selected projects, shown as a grid on the home page. Edit/remove freely. */
+export const PROJECTS: {
+  name: string;
+  description: string;
+  tags: string[];
+  repo?: string;
+  demo?: string;
+}[] = [
+  {
+    name: 'yogeshuu',
+    description: 'This terminal-themed portfolio — Astro 7 + Tailwind v4.',
+    tags: ['astro', 'tailwind'],
+    repo: 'https://github.com/YogeshChebrolu/yogeshuu',
+  },
+  {
+    name: 'project-two',
+    description: 'Short one-line description. Edit me in src/config.ts.',
+    tags: ['typescript'],
+    repo: 'https://github.com/yourusername/project-two',
+  },
+  {
+    name: 'project-three',
+    description: 'Another thing you built — add a repo and/or demo link.',
+    tags: ['node', 'cli'],
+    demo: 'https://example.com',
+  },
 ];
 
 /** Top navigation links. */

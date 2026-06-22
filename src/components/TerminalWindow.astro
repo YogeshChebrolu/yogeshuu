@@ -1,0 +1,35 @@
+---
+/*
+ * Reusable terminal-window chrome — the site's signature "terminal window"
+ * pattern. Title bar (three traffic-light dots + a dim label) over a bordered
+ * body. Drop any content into the default slot.
+ *
+ * Usage:
+ *   <TerminalWindow label="yogesh@localhost: ~/projects">
+ *     <p class="text-fg">...</p>
+ *   </TerminalWindow>
+ *
+ * Spec: docs/design/terminal-hero.md (and the "terminal window" pattern in
+ * .claude/skills/design-md/DESIGN_SYSTEM.md).
+ */
+interface Props {
+  /** Text shown in the title bar next to the dots. Defaults to "~". */
+  label?: string;
+}
+const { label = '~' } = Astro.props;
+---
+
+<div class="rounded-lg border border-line bg-bg-soft overflow-hidden shadow-sm">
+  <!-- title bar -->
+  <div class="flex items-center gap-2 px-4 py-2.5 border-b border-line">
+    <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+    <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+    <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+    <span class="ml-2 text-xs text-fg-dim">{label}</span>
+  </div>
+
+  <!-- body -->
+  <div class="px-5 py-5 text-sm leading-relaxed">
+    <slot />
+  </div>
+</div>

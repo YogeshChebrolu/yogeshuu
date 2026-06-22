@@ -1,0 +1,35 @@
+/*
+  Canonical @theme token block (Tailwind v4, CSS-first) from src/styles/global.css.
+  This is the EXACT format for adding a new token: append it inside @theme, give it a
+  --color-* / --font-* / --radius-* name, and Tailwind exposes it as a utility
+  (e.g. --color-accent → bg-accent / text-accent / border-accent).
+
+  Do NOT create a tailwind.config.js — this project has none on purpose.
+*/
+@theme {
+  --font-mono:
+    'JetBrains Mono', 'Fira Code', ui-monospace, 'SF Mono', 'SFMono-Regular',
+    'Cascadia Code', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* dark (default) — classic terminal */
+  --color-bg: #0a0e14;
+  --color-bg-soft: #11161f;
+  --color-fg: #c9d1d9;
+  --color-fg-dim: #7d8590;
+  --color-accent: #3fb950; /* terminal green */
+  --color-accent-2: #d29922; /* amber */
+  --color-line: #1f2630;
+
+  /* Add new tokens below, then mirror a light value in the .light block. */
+}
+
+/* Light theme overrides — keep any new token in sync here too. */
+.light {
+  --color-bg: #f6f8fa;
+  --color-bg-soft: #ffffff;
+  --color-fg: #1f2328;
+  --color-fg-dim: #57606a;
+  --color-accent: #1a7f37;
+  --color-accent-2: #9a6700;
+  --color-line: #d0d7de;
+}

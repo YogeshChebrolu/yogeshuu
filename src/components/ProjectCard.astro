@@ -1,0 +1,51 @@
+---
+/*
+ * One project tile in the home-page projects grid.
+ * Spec: docs/design/projects-grid.md
+ */
+interface Props {
+  name: string;
+  description: string;
+  tags: string[];
+  repo?: string;
+  demo?: string;
+}
+const { name, description, tags, repo, demo } = Astro.props;
+const linkClass =
+  'text-accent-2 no-underline hover:text-accent transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent';
+---
+
+<article
+  class="rounded-lg border border-line bg-bg-soft p-4 transition-colors hover:border-accent"
+>
+  <h3 class="text-base font-bold text-fg">{name}</h3>
+  <p class="mt-1 text-sm text-fg-dim leading-relaxed">{description}</p>
+
+  {
+    tags.length > 0 && (
+      <p class="mt-2 flex flex-wrap gap-2">
+        {tags.map((t) => (
+          <span class="text-xs text-accent">#{t}</span>
+        ))}
+      </p>
+    )
+  }
+
+  {
+    (repo || demo) && (
+      <p class="mt-3 flex flex-wrap items-center gap-x-3 text-sm">
+        {repo && (
+          <a href={repo} target="_blank" rel="noopener" class={linkClass}>
+            repo
+          </a>
+        )}
+        {repo && demo && <span class="text-fg-dim">·</span>}
+        {demo && (
+          <a href={demo} target="_blank" rel="noopener" class={linkClass}>
+            demo &rarr;
+          </a>
+        )}
+      </p>
+    )
+  }
+</article>
