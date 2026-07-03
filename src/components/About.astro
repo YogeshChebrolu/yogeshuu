@@ -1,5 +1,21 @@
 ---
 import { ABOUT_INTRO, TOOLS, FOCUS_AREAS } from '../config';
+
+/** Generic monoline icons (Feather/Lucide-style) for concepts with no brand logo. */
+const ICONS: Record<string, string> = {
+  search:
+    '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+  message:
+    '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  layers:
+    '<path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/>',
+  terminal:
+    '<polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/>',
+  cloud:
+    '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h.79a4.5 4.5 0 1 1 0 9Z"/>',
+  infinity:
+    '<path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z"/>',
+};
 ---
 
 <section id="about" class="scroll-mt-40 py-6">
@@ -36,8 +52,30 @@ import { ABOUT_INTRO, TOOLS, FOCUS_AREAS } from '../config';
     FOCUS_AREAS.length > 0 && (
       <div class="mt-5 flex flex-wrap gap-2">
         {FOCUS_AREAS.map((f) => (
-          <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-fg-muted">
-            {f}
+          <span class="inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-xs text-fg-muted">
+            {f.slug ? (
+              <img
+                src={`https://cdn.simpleicons.org/${f.slug}${f.color ? `/${f.color}` : ''}`}
+                alt=""
+                aria-hidden="true"
+                width="12"
+                height="12"
+              />
+            ) : (
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                set:html={ICONS[f.icon ?? '']}
+              />
+            )}
+            {f.name}
           </span>
         ))}
       </div>

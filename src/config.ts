@@ -155,16 +155,20 @@ export const TOOLS: { name: string; slug: string; color?: string }[] = [
   { name: 'GitHub', slug: 'github', color: 'fafafa' },
 ];
 
-/** Skill areas without a brand icon — shown as plain text beneath the tools grid. */
-export const FOCUS_AREAS = [
-  'AI SDK',
-  'MCP',
-  'RAG',
-  'NLP',
-  'Deep Learning',
-  'Prompt Engineering',
-  'AWS',
-  'CI/CD',
+/**
+ * Skill areas shown as icon pills beneath the tools grid.
+ * `slug` uses a Simple Icons brand icon; `icon` uses a built-in generic
+ * icon (see ICONS in About.astro) for concepts with no brand logo.
+ */
+export const FOCUS_AREAS: { name: string; slug?: string; icon?: string; color?: string }[] = [
+  { name: 'AI SDK', slug: 'vercel', color: 'fafafa' },
+  { name: 'MCP', slug: 'modelcontextprotocol', color: 'fafafa' },
+  { name: 'RAG', icon: 'search' },
+  { name: 'NLP', icon: 'message' },
+  { name: 'Deep Learning', icon: 'layers' },
+  { name: 'Prompt Engineering', icon: 'terminal' },
+  { name: 'AWS', icon: 'cloud' },
+  { name: 'CI/CD', icon: 'infinity' },
 ];
 
 /** Sidebar navigation. Hash links jump to sections on the home page. */
