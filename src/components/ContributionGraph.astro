@@ -97,11 +97,19 @@ const WEEKDAY_LABELS: Record<number, string> = { 1: 'Mon', 3: 'Wed', 5: 'Fri' };
               <div class="flex flex-col" style={`gap:${GAP}px`}>
                 {week.map((day) =>
                   day ? (
-                    <span
-                      title={day.tooltip}
-                      class="block rounded-[2px] bg-fg cursor-default"
-                      style={`width:${CELL}px; height:${CELL}px; opacity:${LEVEL_OPACITY[day.level] ?? LEVEL_OPACITY[0]}`}
-                    />
+                    <div class="group/cell relative" style={`width:${CELL}px; height:${CELL}px`}>
+                      <span
+                        aria-label={day.tooltip}
+                        class="block h-full w-full rounded-[2px] bg-fg cursor-default"
+                        style={`opacity:${LEVEL_OPACITY[day.level] ?? LEVEL_OPACITY[0]}`}
+                      />
+                      <span
+                        role="tooltip"
+                        class="pointer-events-none absolute top-full left-1/2 z-20 mt-1.5 -translate-x-1/2 scale-95 whitespace-nowrap rounded-md border border-line bg-bg-card px-2 py-1 text-[11px] text-fg opacity-0 shadow-lg transition-all duration-100 group-hover/cell:scale-100 group-hover/cell:opacity-100"
+                      >
+                        {day.tooltip}
+                      </span>
+                    </div>
                   ) : (
                     <span class="block" style={`width:${CELL}px; height:${CELL}px`} />
                   )
