@@ -86,7 +86,10 @@ export const EXPERIENCE: {
   org: string;
   orgHref?: string;
   period: string;
-  points: string[];
+  type?: string;
+  current?: boolean;
+  summary?: string;
+  points?: string[];
   stack: string[];
 }[] = [
   {
@@ -94,6 +97,7 @@ export const EXPERIENCE: {
     org: 'Kairos Computer',
     orgHref: 'https://kairos.computer',
     period: 'Jul 2025 – Mar 2026',
+    type: 'Internship',
     points: [
       'Built Sandbox Agents — agents that control a browser and take autonomous actions to automate repetitive tasks.',
       'Worked on agent evals & benchmarking and an Email Agent.',
@@ -104,6 +108,7 @@ export const EXPERIENCE: {
     role: 'AI Research Intern',
     org: 'Stealth Startup (Educational AI)',
     period: 'Mar 2025 – Jun 2025',
+    type: 'Internship',
     points: [
       'Built MCP clients for Claude Desktop.',
       'Built a video pipeline to process YouTube videos.',
