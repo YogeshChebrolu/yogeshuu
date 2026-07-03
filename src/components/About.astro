@@ -52,31 +52,38 @@ const ICONS: Record<string, string> = {
     FOCUS_AREAS.length > 0 && (
       <div class="mt-5 flex flex-wrap gap-2">
         {FOCUS_AREAS.map((f) => (
-          <span class="inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-xs text-fg-muted">
-            {f.slug ? (
-              <img
-                src={`https://cdn.simpleicons.org/${f.slug}${f.color ? `/${f.color}` : ''}`}
-                alt=""
-                aria-hidden="true"
-                width="12"
-                height="12"
-              />
-            ) : (
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                set:html={ICONS[f.icon ?? '']}
-              />
-            )}
-            {f.name}
-          </span>
+          <div class="group flex items-center h-11 rounded-full border border-line bg-bg-soft overflow-hidden transition-colors hover:border-fg-muted">
+            <span class="grid place-items-center h-11 w-11 shrink-0">
+              {f.slug ? (
+                <img
+                  src={`https://cdn.simpleicons.org/${f.slug}${f.color ? `/${f.color}` : ''}`}
+                  alt={f.name}
+                  width="18"
+                  height="18"
+                  loading="lazy"
+                />
+              ) : (
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="text-fg-dim"
+                  aria-hidden="true"
+                  set:html={ICONS[f.icon ?? '']}
+                />
+              )}
+            </span>
+            <span class="grid grid-cols-[0fr] group-hover:grid-cols-[1fr] transition-[grid-template-columns] duration-300 ease-out">
+              <span class="overflow-hidden whitespace-nowrap text-sm text-fg-dim">
+                <span class="inline-block pr-4">{f.name}</span>
+              </span>
+            </span>
+          </div>
         ))}
       </div>
     )
