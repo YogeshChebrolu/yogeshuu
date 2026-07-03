@@ -1,0 +1,129 @@
+---
+import type { ContributionData } from '../lib/github';
+
+interface Props {
+  username: string;
+  data: ContributionData | null;
+}
+const { username, data } = Astro.props;
+
+// GitHub's own 0-4 buckets, mapped to increasing opacity of the same fg color
+// so levels stay clearly distinct on the dark theme.
+const LEVEL_OPACITY = ['0.06', '0.25', '0.45', '0.7', '1'];
+
+let weeks: (({ date: string; level: number; tooltip: string }) | null)[][] = [];
+let monthLabels: { index: number; label: string }[] = [];
+
+if (data) {
+  const first = new Date(`${data.days[0].date}T00:00:00Z`);
+  const gridStart = new Date(first);
+  gridStart.setUTCDate(first.getUTCDate() - first.getUTCDay());
+
+  const byWeek = new Map<number, (typeof data.days)[number][]>();
+  let maxWeek = 0;
+  for (const day of data.days) {
+    const d = new Date(`${day.date}T00:00:00Z`);
+    const weekIndex = Math.round((d.getTime() - gridStart.getTime()) / (7 * 86400000));
+    maxWeek = Math.max(maxWeek, weekIndex);
+    if (!byWeek.has(weekIndex)) byWeek.set(weekIndex, []);
+    byWeek.get(weekIndex)!.push(day);
+  }
+
+  weeks = Array.from({ length: maxWeek + 1 }, (_, w) => {
+    const days = byWeek.get(w) ?? [];
+    const row: (({ date: string; level: number; tooltip: string }) | null)[] = Array(7).fill(null);
+    for (const day of days) {
+      const d = new Date(`${day.date}T00:00:00Z`);
+      row[d.getUTCDay()] = day;
+    }
+    return row;
+  });
+
+  let lastMonth = -1;
+  weeks.forEach((week, i) => {
+    const firstDay = week.find((d) => d);
+    if (!firstDay) return;
+    const month = new Date(`${firstDay.date}T00:00:00Z`).getUTCMonth();
+    if (month !== lastMonth) {
+      monthLabels.push({
+        index: i,
+        label: new Date(`${firstDay.date}T00:00:00Z`).toLocaleDateString('en-US', {
+          month: 'short',
+          timeZone: 'UTC',
+        }),
+      });
+      lastMonth = month;
+    }
+  });
+
+  // Drop a label if it's crammed right next to the next one (e.g. a
+  // one-column sliver of a month at the very start of the window).
+  monthLabels = monthLabels.filter(
+    (m, i) => i === monthLabels.length - 1 || monthLabels[i + 1].index - m.index >= 2
+  );
+}
+
+const CELL = 10;
+const GAP = 3;
+const WEEKDAY_LABELS: Record<number, string> = { 1: 'Mon', 3: 'Wed', 5: 'Fri' };
+---
+
+{
+  data ? (
+    <div class="overflow-x-auto">
+      <div class="inline-flex gap-2">
+        <div
+          class="flex flex-col text-[10px] text-fg-muted shrink-0"
+          style={`gap:${GAP}px; margin-top:${CELL + GAP + 2}px`}
+        >
+          {Array.from({ length: 7 }, (_, i) => (
+            <div style={`height:${CELL}px; line-height:${CELL}px`}>{WEEKDAY_LABELS[i] ?? ''}</div>
+          ))}
+        </div>
+
+        <div>
+          <div class="relative text-[10px] text-fg-muted" style={`height:${CELL + GAP + 2}px`}>
+            {monthLabels.map((m) => (
+              <span
+                class="absolute top-0"
+                style={`left:${m.index * (CELL + GAP)}px`}
+              >
+                {m.label}
+              </span>
+            ))}
+          </div>
+          <div class="flex" style={`gap:${GAP}px`}>
+            {weeks.map((week) => (
+              <div class="flex flex-col" style={`gap:${GAP}px`}>
+                {week.map((day) =>
+                  day ? (
+                    <span
+                      title={day.tooltip}
+                      class="block rounded-[2px] bg-fg cursor-default"
+                      style={`width:${CELL}px; height:${CELL}px; opacity:${LEVEL_OPACITY[day.level] ?? LEVEL_OPACITY[0]}`}
+                    />
+                  ) : (
+                    <span class="block" style={`width:${CELL}px; height:${CELL}px`} />
+                  )
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <p class="text-sm text-fg-muted">
+      Couldn't load GitHub contributions right now —{' '}
+      <a
+        href={`https://github.com/${username}`}
+        target="_blank"
+        rel="noopener"
+        class="underline hover:text-fg"
+      >
+        see the profile directly
+      </a>
+      .
+    </p>
+  )
+}
