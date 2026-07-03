@@ -131,28 +131,28 @@ export const ABOUT_INTRO =
  * Tools/technologies shown as icons in the About section.
  * `slug` maps to a Simple Icons name (served via cdn.simpleicons.org).
  */
-export const TOOLS: { name: string; slug: string }[] = [
+export const TOOLS: { name: string; slug: string; color?: string }[] = [
   { name: 'Python', slug: 'python' },
   { name: 'TypeScript', slug: 'typescript' },
   { name: 'JavaScript', slug: 'javascript' },
   { name: 'PostgreSQL', slug: 'postgresql' },
   { name: 'MySQL', slug: 'mysql' },
   { name: 'React', slug: 'react' },
-  { name: 'Next.js', slug: 'nextdotjs' },
+  { name: 'Next.js', slug: 'nextdotjs', color: 'fafafa' },
   { name: 'FastAPI', slug: 'fastapi' },
   { name: 'Hono', slug: 'hono' },
   { name: 'Convex', slug: 'convex' },
   { name: 'Supabase', slug: 'supabase' },
   { name: 'Tailwind CSS', slug: 'tailwindcss' },
   { name: 'LangChain', slug: 'langchain' },
-  { name: 'LangGraph', slug: 'langgraph' },
+  { name: 'LangGraph', slug: 'langgraph', color: 'fafafa' },
   { name: 'Pydantic AI', slug: 'pydantic' },
   { name: 'CrewAI', slug: 'crewai' },
   { name: 'PyTorch', slug: 'pytorch' },
-  { name: 'Anthropic', slug: 'anthropic' },
+  { name: 'Anthropic', slug: 'anthropic', color: 'fafafa' },
   { name: 'Docker', slug: 'docker' },
   { name: 'Git', slug: 'git' },
-  { name: 'GitHub', slug: 'github' },
+  { name: 'GitHub', slug: 'github', color: 'fafafa' },
 ];
 
 /** Skill areas without a brand icon — shown as plain text beneath the tools grid. */

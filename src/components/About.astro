@@ -7,21 +7,26 @@ import { ABOUT_INTRO, TOOLS, FOCUS_AREAS, SOCIALS } from '../config';
 
   <p class="text-sm text-fg-dim leading-relaxed max-w-md">{ABOUT_INTRO}</p>
 
-  <div class="mt-6 flex flex-wrap gap-3">
+  <div class="mt-6 flex flex-wrap gap-2">
     {
       TOOLS.map((t) => (
-        <div class="group flex flex-col items-center gap-1.5 w-14" title={t.name}>
-          <div class="grid place-items-center h-11 w-11 rounded-lg border border-line bg-bg-soft transition-colors group-hover:border-fg-muted">
+        <div
+          class="group flex items-center h-11 rounded-full border border-line bg-bg-soft overflow-hidden transition-colors hover:border-fg-muted"
+        >
+          <span class="grid place-items-center h-11 w-11 shrink-0">
             <img
-              src={`https://cdn.simpleicons.org/${t.slug}/9f9fa9`}
+              src={`https://cdn.simpleicons.org/${t.slug}${t.color ? `/${t.color}` : ''}`}
               alt={t.name}
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               loading="lazy"
-              class="opacity-80 transition-opacity group-hover:opacity-100"
             />
-          </div>
-          <span class="text-[10px] text-fg-muted text-center leading-tight">{t.name}</span>
+          </span>
+          <span class="grid grid-cols-[0fr] group-hover:grid-cols-[1fr] transition-[grid-template-columns] duration-300 ease-out">
+            <span class="overflow-hidden whitespace-nowrap text-sm text-fg-dim">
+              <span class="inline-block pr-4">{t.name}</span>
+            </span>
+          </span>
         </div>
       ))
     }
