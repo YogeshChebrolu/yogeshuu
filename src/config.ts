@@ -17,10 +17,7 @@ export const SITE = {
   user: 'yogesh',
   host: 'localhost',
   /** Lines "printed" by the fake `whoami` command in the hero. */
-  bio: [
-    'Developer. I build things and write about them.',
-    'Currently exploring AI tooling and the web.',
-  ],
+  bio: ['Developer. I build things and write about them.'],
 } as const;
 
 /** Social links shown in the hero. Remove any you don't want. */
