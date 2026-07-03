@@ -1,0 +1,33 @@
+---
+/*
+ * Stacked, increasingly-blurred layers, each masked to its own band of the
+ * fade zone — creates a smooth "melts into blur" transition toward the
+ * bottom of the viewport instead of a hard backdrop-blur edge. Sits behind
+ * the dock (lower z-index) so it doesn't block clicks/hover on it.
+ *
+ * 8 layers, blur doubling 32px -> 0.25px going up the zone (strongest blur
+ * sits at the very bottom edge, fading to barely-there near the top, where
+ * it meets sharp page content), each band 25% wide sliding by 12.5%/step.
+ */
+const LAYERS = [
+  { blur: 32, mask: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 12.5%, rgba(0,0,0,0) 25%)' },
+  { blur: 16, mask: 'linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 12.5%, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 37.5%)' },
+  { blur: 8, mask: 'linear-gradient(to top, rgba(0,0,0,0) 12.5%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 37.5%, rgba(0,0,0,0) 50%)' },
+  { blur: 4, mask: 'linear-gradient(to top, rgba(0,0,0,0) 25%, rgba(0,0,0,1) 37.5%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 62.5%)' },
+  { blur: 2, mask: 'linear-gradient(to top, rgba(0,0,0,0) 37.5%, rgba(0,0,0,1) 50%, rgba(0,0,0,1) 62.5%, rgba(0,0,0,0) 75%)' },
+  { blur: 1, mask: 'linear-gradient(to top, rgba(0,0,0,0) 50%, rgba(0,0,0,1) 62.5%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 87.5%)' },
+  { blur: 0.5, mask: 'linear-gradient(to top, rgba(0,0,0,0) 62.5%, rgba(0,0,0,1) 75%, rgba(0,0,0,1) 87.5%, rgba(0,0,0,0) 100%)' },
+  { blur: 0.25, mask: 'linear-gradient(to top, rgba(0,0,0,0) 75%, rgba(0,0,0,1) 87.5%, rgba(0,0,0,1) 100%)' },
+];
+---
+
+<div class="pointer-events-none fixed inset-x-0 bottom-0 z-30 h-18 sm:h-20" aria-hidden="true">
+  {
+    LAYERS.map((l) => (
+      <div
+        class="absolute inset-0"
+        style={`backdrop-filter: blur(${l.blur}px); -webkit-backdrop-filter: blur(${l.blur}px); mask-image: ${l.mask}; -webkit-mask-image: ${l.mask};`}
+      />
+    ))
+  }
+</div>

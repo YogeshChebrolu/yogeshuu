@@ -1,0 +1,28 @@
+---
+---
+
+<button
+  type="button"
+  aria-label="Toggle theme"
+  class="theme-toggle grid place-items-center h-9 w-9 rounded-full border border-line bg-bg-soft text-fg-dim hover:text-fg hover:border-fg-muted transition-colors cursor-pointer"
+>
+  <span class="theme-icon text-sm leading-none">☾</span>
+</button>
+
+<script is:inline>
+  (() => {
+    const icons = document.querySelectorAll('.theme-icon');
+    const setIcons = () => {
+      const isLight = document.documentElement.classList.contains('light');
+      icons.forEach((icon) => (icon.textContent = isLight ? '☀' : '☾'));
+    };
+    setIcons();
+    document.querySelectorAll('.theme-toggle').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const isLight = document.documentElement.classList.toggle('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        setIcons();
+      });
+    });
+  })();
+</script>

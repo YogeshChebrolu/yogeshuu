@@ -3,11 +3,13 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
+import react from '@astrojs/react';
+
 // https://astro.build/config
 export default defineConfig({
   // TODO: change this to your real domain before deploying
   site: 'https://example.com',
-  integrations: [sitemap()],
+  integrations: [sitemap(), react()],
   redirects: {
     '/about': '/#about',
   },

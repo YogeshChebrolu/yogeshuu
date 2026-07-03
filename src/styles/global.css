@@ -23,6 +23,7 @@
   --color-fg-muted: #71717b;
   --color-accent: #fafafa;
   --color-line: rgb(255 255 255 / 0.1);
+  --color-fill: #27272a;
 }
 
 /* light theme overrides — toggled by adding .light on <html> */
@@ -35,6 +36,7 @@
   --color-fg-muted: #71717b;
   --color-accent: #09090b;
   --color-line: #e4e4e7;
+  --color-fill: #e4e4e7;
 }
 
 html {
