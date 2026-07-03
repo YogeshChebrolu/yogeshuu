@@ -64,9 +64,9 @@ const primary = demo ?? repo;
             href={demo}
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-1.5 rounded-lg bg-fg px-3.5 py-2 text-sm font-medium text-bg no-underline transition-opacity hover:opacity-90"
+            aria-label={`${name} live demo`}
+            class="grid place-items-center h-9 w-9 rounded-lg border border-line text-fg-dim no-underline transition-colors hover:text-fg hover:border-fg-muted"
           >
-            Live demo
             <span aria-hidden="true">&#8599;</span>
           </a>
         )
