@@ -52,14 +52,11 @@ const isActive = (href: string) => {
 <header
   class="lg:hidden sticky top-0 z-40 min-w-0 border-b border-line bg-bg/70 backdrop-blur-md"
 >
-  <div class="px-5 sm:px-6 h-16 flex items-center justify-between min-w-0">
-    <a href="/" class="font-semibold tracking-tight text-fg no-underline text-[15px] shrink-0">
-      {SITE.name}<span class="text-fg-muted">.</span>
-    </a>
+  <div class="px-5 sm:px-6 h-16 flex items-center justify-end min-w-0">
     <div class="flex flex-1 items-center justify-end gap-4 min-w-0">
       <nav class="flex items-center gap-4 text-sm overflow-x-auto min-w-0">
         {
-          NAV.map((item) => {
+          NAV.filter((item) => item.label !== 'Experience').map((item) => {
             const external = item.href.endsWith('.pdf');
             return (
               <a
