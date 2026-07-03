@@ -6,17 +6,14 @@ import { PROJECTS } from '../config';
 import ProjectCard from './ProjectCard.astro';
 ---
 
-<section id="works" class="scroll-mt-20 mt-20 sm:mt-24" aria-label="Works">
-  <div class="flex items-baseline justify-between">
-    <h2 class="text-xl font-bold tracking-tight text-fg">Works</h2>
-    <span class="text-sm text-fg-muted">Selected projects</span>
-  </div>
+<section id="works" class="scroll-mt-40 py-6" aria-label="Works">
+  <h2 class="font-serif-label text-lg text-fg py-5">Some of my works</h2>
 
   {
     PROJECTS.length === 0 ? (
       <p class="text-fg-muted text-sm py-6">No projects yet.</p>
     ) : (
-      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      <div class="grid gap-4 sm:grid-cols-2">
         {PROJECTS.map((p) => (
           <ProjectCard
             name={p.name}

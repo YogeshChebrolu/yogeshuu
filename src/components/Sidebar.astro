@@ -9,14 +9,12 @@ const isActive = (href: string) => {
 };
 ---
 
-<!-- Desktop: fixed, vertically-centered left sidebar -->
-<aside
-  class="hidden lg:flex lg:flex-col lg:justify-center lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 lg:px-12"
->
-  <a href="/" class="mb-10 font-semibold tracking-tight text-fg no-underline">
+<!-- Desktop: fixed left sidebar, positioned like the reference (top-52 left-10) -->
+<aside class="hidden lg:flex lg:flex-col lg:fixed lg:top-52 lg:left-10 lg:w-64 lg:z-20">
+  <a href="/" class="mb-6 pl-4 font-semibold tracking-tight text-fg no-underline">
     {SITE.name}<span class="text-fg-muted">.</span>
   </a>
-  <nav class="flex flex-col gap-4 text-sm">
+  <nav class="flex flex-col gap-2">
     {
       NAV.map((item) => {
         const external = item.href.endsWith('.pdf');
@@ -28,8 +26,10 @@ const isActive = (href: string) => {
             target={external ? '_blank' : undefined}
             rel={external ? 'noopener' : undefined}
             class:list={[
-              'nav-link no-underline transition-colors w-fit',
-              isActive(item.href) ? 'text-fg font-medium' : 'text-fg-dim hover:text-fg',
+              'nav-link relative flex items-center text-sm transition-colors duration-300 pl-4 py-0.5 no-underline',
+              isActive(item.href)
+                ? 'text-fg'
+                : 'text-fg opacity-40 hover:opacity-70',
             ]}
           >
             {item.label}
@@ -42,7 +42,7 @@ const isActive = (href: string) => {
     id="theme-toggle-desktop"
     type="button"
     aria-label="Toggle theme"
-    class="theme-toggle mt-10 grid place-items-center h-8 w-8 rounded-md border border-line text-fg-dim hover:text-fg hover:border-fg-muted transition-colors cursor-pointer"
+    class="theme-toggle mt-6 ml-4 grid place-items-center h-8 w-8 rounded-md border border-line text-fg-dim hover:text-fg hover:border-fg-muted transition-colors cursor-pointer"
   >
     <span class="theme-icon text-sm leading-none">☾</span>
   </button>
@@ -67,8 +67,8 @@ const isActive = (href: string) => {
                 target={external ? '_blank' : undefined}
                 rel={external ? 'noopener' : undefined}
                 class:list={[
-                  'no-underline transition-colors whitespace-nowrap',
-                  isActive(item.href) ? 'text-fg font-medium' : 'text-fg-dim hover:text-fg',
+                  'no-underline transition-colors whitespace-nowrap text-fg',
+                  isActive(item.href) ? '' : 'opacity-40 hover:opacity-70',
                 ]}
               >
                 {item.label}
@@ -120,9 +120,8 @@ const isActive = (href: string) => {
       links.forEach((link) => {
         const href = link.getAttribute('data-href');
         const match = href === '/' ? id === 'home' : href === `/#${id}`;
-        link.classList.toggle('text-fg', match);
-        link.classList.toggle('font-medium', match);
-        link.classList.toggle('text-fg-dim', !match);
+        link.classList.toggle('opacity-40', !match);
+        link.classList.toggle('hover:opacity-70', !match);
       });
     };
 

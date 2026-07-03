@@ -24,7 +24,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString()
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
@@ -54,8 +54,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString()
   </head>
   <body class="min-h-screen flex flex-col lg:block overflow-x-clip">
     <Sidebar />
-    <div class="lg:pl-64 flex flex-col min-h-screen min-w-0 lg:min-h-0">
-      <main class="flex-1 w-full max-w-2xl px-5 sm:px-6 lg:px-10 py-14 sm:py-20">
+    <div class="lg:pl-[19rem] flex flex-col min-h-screen min-w-0 lg:min-h-0">
+      <main class="flex-1 w-full max-w-xl px-5 sm:px-6 lg:px-0 pt-14 sm:pt-24 lg:pt-44 pb-14 sm:pb-20">
         <slot />
       </main>
       <Footer />

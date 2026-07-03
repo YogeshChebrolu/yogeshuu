@@ -2,22 +2,20 @@
 import { SITE, SOCIALS } from '../config';
 ---
 
-<section id="home" class="scroll-mt-20 pt-4 sm:pt-8 lg:min-h-[calc(100vh-8rem)] lg:flex lg:flex-col lg:justify-center">
-  <p class="text-sm font-medium tracking-wide text-fg-dim uppercase">
-    {SITE.role}
-  </p>
+<section id="home" class="scroll-mt-40">
+  <div class="flex items-center justify-between">
+    <p class="font-serif-label text-lg text-fg">{SITE.role}</p>
+  </div>
 
-  <h1
-    class="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.08] text-fg max-w-2xl text-balance"
-  >
+  <h1 class="mt-3 leading-snug text-fg text-lg sm:text-xl">
     {SITE.headline}
   </h1>
 
-  <p class="mt-5 text-base sm:text-lg text-fg-dim leading-relaxed max-w-xl">
+  <p class="mt-3 leading-snug text-fg/80 text-lg sm:text-xl">
     {SITE.tagline}
   </p>
 
-  <div class="mt-8 flex flex-wrap items-center gap-3">
+  <div class="mt-6 flex flex-wrap items-center gap-3">
     <a
       href="mailto:chebroluyogesh25@gmail.com"
       class="inline-flex items-center rounded-md bg-fg px-4 py-2 text-sm font-medium text-bg no-underline transition-opacity hover:opacity-90"
@@ -34,7 +32,7 @@ import { SITE, SOCIALS } from '../config';
     </a>
   </div>
 
-  <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+  <div class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
     {
       SOCIALS.map((s) => (
         <a

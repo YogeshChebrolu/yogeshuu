@@ -18,12 +18,9 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
   <Projects />
 
-  <section id="writing" class="scroll-mt-20 mt-20 sm:mt-24">
-    <div class="flex items-baseline justify-between">
-      <h2 class="text-xl font-bold tracking-tight text-fg">Writing</h2>
-      <span class="text-sm text-fg-muted">Notes &amp; essays</span>
-    </div>
-    <div class="mt-4">
+  <section id="writing" class="scroll-mt-40 py-6">
+    <h2 class="font-serif-label text-lg text-fg py-5">Writing</h2>
+    <div>
       {
         posts.length === 0 ? (
           <p class="text-fg-muted text-sm py-6">No posts yet. Check back soon.</p>

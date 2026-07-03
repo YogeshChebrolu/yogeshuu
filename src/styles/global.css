@@ -7,32 +7,33 @@
 */
 @theme {
   --font-sans:
-    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Work Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     Helvetica, Arial, sans-serif;
+  --font-serif: 'Fraunces', ui-serif, Georgia, serif;
   --font-mono:
     'JetBrains Mono', ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Consolas,
     'Liberation Mono', monospace;
 
-  /* dark (default) — near-black, high contrast */
-  --color-bg: #0a0a0a;
-  --color-bg-soft: #121212;
-  --color-bg-card: #141414;
+  /* dark (default) — exact shadcn/zinc dark palette */
+  --color-bg: #09090b;
+  --color-bg-soft: #18181b;
+  --color-bg-card: #18181b;
   --color-fg: #fafafa;
-  --color-fg-dim: #a1a1aa;
-  --color-fg-muted: #71717a;
+  --color-fg-dim: #9f9fa9;
+  --color-fg-muted: #71717b;
   --color-accent: #fafafa;
-  --color-line: #262626;
+  --color-line: rgb(255 255 255 / 0.1);
 }
 
 /* light theme overrides — toggled by adding .light on <html> */
 .light {
   --color-bg: #ffffff;
-  --color-bg-soft: #fafafa;
+  --color-bg-soft: #f4f4f5;
   --color-bg-card: #ffffff;
-  --color-fg: #0a0a0a;
+  --color-fg: #09090b;
   --color-fg-dim: #52525b;
-  --color-fg-muted: #71717a;
-  --color-accent: #0a0a0a;
+  --color-fg-muted: #71717b;
+  --color-accent: #09090b;
   --color-line: #e4e4e7;
 }
 
@@ -50,7 +51,12 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  letter-spacing: -0.011em;
+}
+
+/* serif section-label style, matching the reference site's "fraunces" accents */
+.font-serif-label {
+  font-family: var(--font-serif);
+  font-weight: 300;
 }
 
 /* neutral text selection */
@@ -81,8 +87,8 @@ body {
 .prose h3,
 .prose h4 {
   color: var(--color-fg);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-serif);
+  font-weight: 300;
   line-height: 1.25;
   margin-top: 2.5rem;
   margin-bottom: 0.9rem;
