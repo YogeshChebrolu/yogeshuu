@@ -35,10 +35,11 @@ export const SOCIALS: { label: string; href: string }[] = [
   { label: 'email', href: 'mailto:chebroluyogesh25@gmail.com' },
 ];
 
-/** Selected projects, shown as a grid on the home page. Edit/remove freely. */
+/** Selected projects, shown as large preview cards on the home page. Edit/remove freely. */
 export const PROJECTS: {
   name: string;
   description: string;
+  image: string;
   tags: string[];
   repo?: string;
   demo?: string;
@@ -47,6 +48,7 @@ export const PROJECTS: {
     name: 'Alpha Brain',
     description:
       'Agentic AI second brain — captures ideas via Telegram, parses them into structured entries with Claude + Inngest, and persists to Supabase.',
+    image: '/works/alpha-brain.png',
     tags: ['claude', 'inngest', 'next.js', 'supabase'],
     demo: 'https://alpha-brain-five.vercel.app/login',
   },
@@ -54,6 +56,7 @@ export const PROJECTS: {
     name: 'InTrust',
     description:
       'AI insurance recommendation engine — RAG pipeline over 300+ IRDAI policies (Pinecone + Qwen3) with a chat-first, citation-verified interface.',
+    image: '/works/intrust.png',
     tags: ['llm', 'rag', 'pinecone'],
     demo: 'https://in-trust-web.vercel.app',
   },
@@ -61,6 +64,7 @@ export const PROJECTS: {
     name: 'YouTube Multi-Modal RAG',
     description:
       'Chrome extension to chat with YouTube videos — custom multi-modal RAG combining transcripts with frame-synced visual retrieval, plus cross-video notes.',
+    image: '/works/yt-rag.png',
     tags: ['rag', 'multimodal', 'chrome-extension'],
     repo: 'https://github.com/YogeshChebrolu/yt_rag_frontend',
   },
@@ -68,6 +72,7 @@ export const PROJECTS: {
     name: 'EN→IT Transformer',
     description:
       'English-to-Italian translator built from scratch in PyTorch — custom multi-head attention, positional encoding, and an end-to-end training pipeline.',
+    image: '/works/transformer.png',
     tags: ['pytorch', 'transformers', 'nlp'],
     repo: 'https://github.com/YogeshChebrolu/Transformers-Implementation-in-PyTorch',
   },
@@ -75,6 +80,7 @@ export const PROJECTS: {
     name: 'restrict-me',
     description:
       'A small Windows desktop app that blocks distracting sites and keywords for 6, 12, or 24 hours via the hosts file.',
+    image: '/works/restrict-me.png',
     tags: ['powershell', 'windows', 'desktop'],
     repo: 'https://github.com/YogeshChebrolu/restrict-me',
   },

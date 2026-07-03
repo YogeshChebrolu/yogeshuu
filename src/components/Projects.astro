@@ -1,6 +1,7 @@
 ---
 /*
- * Home-page "Works" section — a section heading over a grid of ProjectCards.
+ * Home-page "Works" section — a section heading over a vertical
+ * stack of large ProjectCard previews.
  */
 import { PROJECTS } from '../config';
 import ProjectCard from './ProjectCard.astro';
@@ -13,11 +14,12 @@ import ProjectCard from './ProjectCard.astro';
     PROJECTS.length === 0 ? (
       <p class="text-fg-muted text-sm py-6">No projects yet.</p>
     ) : (
-      <div class="grid gap-4 sm:grid-cols-2">
+      <div class="flex flex-col gap-10">
         {PROJECTS.map((p) => (
           <ProjectCard
             name={p.name}
             description={p.description}
+            image={p.image}
             tags={p.tags}
             repo={p.repo}
             demo={p.demo}
