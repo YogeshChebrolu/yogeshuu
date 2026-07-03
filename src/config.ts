@@ -27,6 +27,7 @@ export const SITE = {
 export const SOCIALS: { label: string; href: string }[] = [
   { label: 'github', href: 'https://github.com/YogeshChebrolu' },
   { label: 'x', href: 'https://x.com/yogesh_chebrolu' },
+  { label: 'linkedin', href: 'https://linkedin.com/in/yogesh-chebrolu/' },
   { label: 'email', href: 'mailto:chebroluyogesh25@gmail.com' },
 ];
 
@@ -39,27 +40,45 @@ export const PROJECTS: {
   demo?: string;
 }[] = [
   {
-    name: 'yogeshuu',
-    description: 'This terminal-themed portfolio — Astro 7 + Tailwind v4.',
-    tags: ['astro', 'tailwind'],
-    repo: 'https://github.com/YogeshChebrolu/yogeshuu',
+    name: 'Alpha Brain',
+    description:
+      'Agentic AI second brain — captures ideas via Telegram, parses them into structured entries with Claude + Inngest, and persists to Supabase.',
+    tags: ['claude', 'inngest', 'next.js', 'supabase'],
+    demo: 'https://alpha-brain-five.vercel.app/login',
   },
   {
-    name: 'project-two',
-    description: 'Short one-line description. Edit me in src/config.ts.',
-    tags: ['typescript'],
-    repo: 'https://github.com/yourusername/project-two',
+    name: 'InTrust',
+    description:
+      'AI insurance recommendation engine — RAG pipeline over 300+ IRDAI policies (Pinecone + Qwen3) with a chat-first, citation-verified interface.',
+    tags: ['llm', 'rag', 'pinecone'],
+    demo: 'https://in-trust-web.vercel.app',
   },
   {
-    name: 'project-three',
-    description: 'Another thing you built — add a repo and/or demo link.',
-    tags: ['node', 'cli'],
-    demo: 'https://example.com',
+    name: 'YouTube Multi-Modal RAG',
+    description:
+      'Chrome extension to chat with YouTube videos — custom multi-modal RAG combining transcripts with frame-synced visual retrieval, plus cross-video notes.',
+    tags: ['rag', 'multimodal', 'chrome-extension'],
+    repo: 'https://github.com/YogeshChebrolu/yt_rag_frontend',
+  },
+  {
+    name: 'EN→IT Transformer',
+    description:
+      'English-to-Italian translator built from scratch in PyTorch — custom multi-head attention, positional encoding, and an end-to-end training pipeline.',
+    tags: ['pytorch', 'transformers', 'nlp'],
+    repo: 'https://github.com/YogeshChebrolu/Transformers-Implementation-in-PyTorch',
+  },
+  {
+    name: 'restrict-me',
+    description:
+      'A small Windows desktop app that blocks distracting sites and keywords for 6, 12, or 24 hours via the hosts file.',
+    tags: ['powershell', 'windows', 'desktop'],
+    repo: 'https://github.com/YogeshChebrolu/restrict-me',
   },
 ];
 
 /** Top navigation links. */
 export const NAV: { label: string; href: string }[] = [
-  { label: 'posts', href: '/' },
+  { label: 'projects', href: '/' },
   { label: 'about', href: '/about' },
+  { label: 'resume', href: '/resume.pdf' },
 ];
