@@ -16,9 +16,13 @@ const path = Astro.url.pathname;
       NAV.map((item) => {
         const active =
           item.href === '/' ? path === '/' : path.startsWith(item.href);
+        const external =
+          item.href.startsWith('http') || item.href.endsWith('.pdf');
         return (
           <a
             href={item.href}
+            target={external ? '_blank' : undefined}
+            rel={external ? 'noopener' : undefined}
             class:list={[
               'no-underline transition-colors hover:text-accent',
               active ? 'text-accent' : 'text-fg-dim',
