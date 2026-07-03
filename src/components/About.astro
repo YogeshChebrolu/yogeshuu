@@ -1,5 +1,5 @@
 ---
-import { ABOUT_INTRO, TOOLS, FOCUS_AREAS, SOCIALS } from '../config';
+import { ABOUT_INTRO, TOOLS, FOCUS_AREAS } from '../config';
 ---
 
 <section id="about" class="scroll-mt-40 py-6">
@@ -43,19 +43,4 @@ import { ABOUT_INTRO, TOOLS, FOCUS_AREAS, SOCIALS } from '../config';
       </div>
     )
   }
-
-  <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-    {
-      SOCIALS.map((s) => (
-        <a
-          href={s.href}
-          target="_blank"
-          rel="me noopener"
-          class="text-fg-dim no-underline hover:text-fg transition-colors"
-        >
-          {s.label}
-        </a>
-      ))
-    }
-  </div>
 </section>
