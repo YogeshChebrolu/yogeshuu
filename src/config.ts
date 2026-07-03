@@ -21,6 +21,9 @@ export const SITE = {
   tagline:
     "I'm Yogesh, an AI engineer. I mostly automate my own life with the things I build.",
 
+  /** GitHub username — used for the contributions heatmap in About. */
+  githubUsername: 'YogeshChebrolu',
+
   /** Kept for legacy references; no longer shown. */
   user: 'yogesh',
   host: 'localhost',
@@ -125,7 +128,7 @@ export const EXPERIENCE: {
 
 /** Short intro shown at the top of the home page About section. */
 export const ABOUT_INTRO =
-  "Hi, I'm Yogesh 👋 — an AI Engineer building multi-modal AI systems and agentic workflows. I mostly automate my own life with them.";
+  "I'm Yogesh 👋 — an AI Engineer building multi-modal AI systems and agentic workflows. I mostly automate my own life with them.";
 
 /**
  * Tools/technologies shown as icons in the About section.

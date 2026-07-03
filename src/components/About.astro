@@ -1,5 +1,6 @@
 ---
-import { ABOUT_INTRO, TOOLS, FOCUS_AREAS } from '../config';
+import { SITE, ABOUT_INTRO, TOOLS, FOCUS_AREAS } from '../config';
+const chartUrl = `https://ghchart.rshah.org/000000/${SITE.githubUsername}`;
 
 /** Generic monoline icons (Feather/Lucide-style) for concepts with no brand logo. */
 const ICONS: Record<string, string> = {
@@ -88,4 +89,28 @@ const ICONS: Record<string, string> = {
       </div>
     )
   }
+
+  <div class="mt-8">
+    <div class="overflow-x-auto">
+      <img
+        src={chartUrl}
+        alt={`${SITE.name}'s GitHub contribution graph`}
+        loading="lazy"
+        class="min-w-[640px]"
+        style="filter: invert(1) brightness(0.92) contrast(0.9);"
+      />
+    </div>
+    <p class="mt-2 text-xs text-fg-muted">
+      Contributions on{' '}
+      <a
+        href={`https://github.com/${SITE.githubUsername}`}
+        target="_blank"
+        rel="noopener"
+        class="underline decoration-fg-muted hover:text-fg hover:decoration-fg transition-colors"
+      >
+        GitHub
+      </a>
+      .
+    </p>
+  </div>
 </section>
