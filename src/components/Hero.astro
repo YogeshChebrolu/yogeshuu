@@ -1,0 +1,51 @@
+---
+import { SITE, SOCIALS } from '../config';
+---
+
+<section id="home" class="scroll-mt-20 pt-4 sm:pt-8 lg:min-h-[calc(100vh-8rem)] lg:flex lg:flex-col lg:justify-center">
+  <p class="text-sm font-medium tracking-wide text-fg-dim uppercase">
+    {SITE.role}
+  </p>
+
+  <h1
+    class="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.08] text-fg max-w-2xl text-balance"
+  >
+    {SITE.headline}
+  </h1>
+
+  <p class="mt-5 text-base sm:text-lg text-fg-dim leading-relaxed max-w-xl">
+    {SITE.tagline}
+  </p>
+
+  <div class="mt-8 flex flex-wrap items-center gap-3">
+    <a
+      href="mailto:chebroluyogesh25@gmail.com"
+      class="inline-flex items-center rounded-md bg-fg px-4 py-2 text-sm font-medium text-bg no-underline transition-opacity hover:opacity-90"
+    >
+      Get in touch
+    </a>
+    <a
+      href="/resume.pdf"
+      target="_blank"
+      rel="noopener"
+      class="inline-flex items-center rounded-md border border-line px-4 py-2 text-sm font-medium text-fg no-underline transition-colors hover:border-fg-muted"
+    >
+      Resume
+    </a>
+  </div>
+
+  <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+    {
+      SOCIALS.map((s) => (
+        <a
+          href={s.href}
+          target="_blank"
+          rel="me noopener"
+          class="text-fg-dim no-underline hover:text-fg transition-colors"
+        >
+          {s.label}
+        </a>
+      ))
+    }
+  </div>
+</section>

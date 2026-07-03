@@ -1,0 +1,140 @@
+---
+import { SITE, NAV } from '../config';
+const path = Astro.url.pathname;
+
+const isActive = (href: string) => {
+  if (href.startsWith('/#')) return false;
+  if (href === '/') return path === '/';
+  return path.startsWith(href);
+};
+---
+
+<!-- Desktop: fixed, vertically-centered left sidebar -->
+<aside
+  class="hidden lg:flex lg:flex-col lg:justify-center lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 lg:px-12"
+>
+  <a href="/" class="mb-10 font-semibold tracking-tight text-fg no-underline">
+    {SITE.name}<span class="text-fg-muted">.</span>
+  </a>
+  <nav class="flex flex-col gap-4 text-sm">
+    {
+      NAV.map((item) => {
+        const external = item.href.endsWith('.pdf');
+        return (
+          <a
+            href={item.href}
+            data-nav-link
+            data-href={item.href}
+            target={external ? '_blank' : undefined}
+            rel={external ? 'noopener' : undefined}
+            class:list={[
+              'nav-link no-underline transition-colors w-fit',
+              isActive(item.href) ? 'text-fg font-medium' : 'text-fg-dim hover:text-fg',
+            ]}
+          >
+            {item.label}
+          </a>
+        );
+      })
+    }
+  </nav>
+  <button
+    id="theme-toggle-desktop"
+    type="button"
+    aria-label="Toggle theme"
+    class="theme-toggle mt-10 grid place-items-center h-8 w-8 rounded-md border border-line text-fg-dim hover:text-fg hover:border-fg-muted transition-colors cursor-pointer"
+  >
+    <span class="theme-icon text-sm leading-none">☾</span>
+  </button>
+</aside>
+
+<!-- Mobile: sticky top bar -->
+<header
+  class="lg:hidden sticky top-0 z-40 min-w-0 border-b border-line bg-bg/70 backdrop-blur-md"
+>
+  <div class="px-5 sm:px-6 h-16 flex items-center justify-between min-w-0">
+    <a href="/" class="font-semibold tracking-tight text-fg no-underline text-[15px] shrink-0">
+      {SITE.name}<span class="text-fg-muted">.</span>
+    </a>
+    <div class="flex flex-1 items-center justify-end gap-4 min-w-0">
+      <nav class="flex items-center gap-4 text-sm overflow-x-auto min-w-0">
+        {
+          NAV.map((item) => {
+            const external = item.href.endsWith('.pdf');
+            return (
+              <a
+                href={item.href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener' : undefined}
+                class:list={[
+                  'no-underline transition-colors whitespace-nowrap',
+                  isActive(item.href) ? 'text-fg font-medium' : 'text-fg-dim hover:text-fg',
+                ]}
+              >
+                {item.label}
+              </a>
+            );
+          })
+        }
+      </nav>
+      <button
+        id="theme-toggle-mobile"
+        type="button"
+        aria-label="Toggle theme"
+        class="theme-toggle shrink-0 grid place-items-center h-8 w-8 rounded-md border border-line text-fg-dim hover:text-fg hover:border-fg-muted transition-colors cursor-pointer"
+      >
+        <span class="theme-icon text-sm leading-none">☾</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const icons = document.querySelectorAll('.theme-icon');
+    const setIcons = () => {
+      const isLight = document.documentElement.classList.contains('light');
+      icons.forEach((icon) => (icon.textContent = isLight ? '☀' : '☾'));
+    };
+    setIcons();
+    document.querySelectorAll('.theme-toggle').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const isLight = document.documentElement.classList.toggle('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        setIcons();
+      });
+    });
+  })();
+</script>
+
+<script is:inline>
+  (() => {
+    if (window.location.pathname !== '/') return;
+    const links = document.querySelectorAll('[data-nav-link]');
+    const sections = ['home', 'experience', 'works', 'writing']
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+    if (!sections.length || !links.length) return;
+
+    const setActive = (id) => {
+      links.forEach((link) => {
+        const href = link.getAttribute('data-href');
+        const match = href === '/' ? id === 'home' : href === `/#${id}`;
+        link.classList.toggle('text-fg', match);
+        link.classList.toggle('font-medium', match);
+        link.classList.toggle('text-fg-dim', !match);
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActive(visible.target.id);
+      },
+      { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+    sections.forEach((s) => observer.observe(s));
+  })();
+</script>

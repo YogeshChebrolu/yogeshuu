@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../config';
 
@@ -20,6 +20,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString()
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -44,10 +52,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString()
       if (t === 'light') document.documentElement.classList.add('light');
     </script>
   </head>
-  <body class="min-h-screen flex flex-col">
-    <div class="w-full max-w-3xl mx-auto px-5 sm:px-6 flex-1 flex flex-col">
-      <Header />
-      <main class="flex-1 py-10">
+  <body class="min-h-screen flex flex-col lg:block overflow-x-clip">
+    <Sidebar />
+    <div class="lg:pl-64 flex flex-col min-h-screen min-w-0 lg:min-h-0">
+      <main class="flex-1 w-full max-w-2xl px-5 sm:px-6 lg:px-10 py-14 sm:py-20">
         <slot />
       </main>
       <Footer />

@@ -11,12 +11,19 @@ export const SITE = {
   url: 'https://example.com',
   description: 'Notes on building software.',
 
-  /** Hero block (the terminal). */
+  /** Hero block. */
   name: 'Yogesh',
-  /** The username shown after the prompt, e.g. user@host. */
+  /** Small eyebrow label above the hero heading. */
+  role: 'AI Engineer',
+  /** Big hero heading — the one-liner that defines you. */
+  headline: 'I build multi-modal AI systems and agentic workflows.',
+  /** Supporting sentence under the heading. */
+  tagline:
+    "I'm Yogesh, an AI engineer. I mostly automate my own life with the things I build.",
+
+  /** Kept for legacy references; no longer shown. */
   user: 'yogesh',
   host: 'localhost',
-  /** Lines "printed" by the fake `whoami` command in the hero. */
   bio: ['Developer. I build things and write about them.'],
 } as const;
 
@@ -73,9 +80,44 @@ export const PROJECTS: {
   },
 ];
 
-/** Top navigation links. */
+/** Work experience, shown as a timeline in the home page Experience section. */
+export const EXPERIENCE: {
+  role: string;
+  org: string;
+  orgHref?: string;
+  period: string;
+  points: string[];
+  stack: string[];
+}[] = [
+  {
+    role: 'AI Engineering Intern',
+    org: 'Kairos Computer',
+    orgHref: 'https://kairos.computer',
+    period: 'Jul 2025 – Mar 2026',
+    points: [
+      'Built Sandbox Agents — agents that control a browser and take autonomous actions to automate repetitive tasks.',
+      'Worked on agent evals & benchmarking and an Email Agent.',
+    ],
+    stack: ['TypeScript', 'Python', 'FastAPI', 'Postgres'],
+  },
+  {
+    role: 'AI Research Intern',
+    org: 'Stealth Startup (Educational AI)',
+    period: 'Mar 2025 – Jun 2025',
+    points: [
+      'Built MCP clients for Claude Desktop.',
+      'Built a video pipeline to process YouTube videos.',
+    ],
+    stack: ['LangGraph', 'LangChain', 'FastMCP', 'Pydantic', 'RAG'],
+  },
+];
+
+/** Sidebar navigation. Hash links jump to sections on the home page. */
 export const NAV: { label: string; href: string }[] = [
-  { label: 'projects', href: '/' },
-  { label: 'about', href: '/about' },
-  { label: 'resume', href: '/resume.pdf' },
+  { label: 'Home', href: '/' },
+  { label: 'Experience', href: '/#experience' },
+  { label: 'Works', href: '/#works' },
+  { label: 'About', href: '/about' },
+  { label: 'Writing', href: '/#writing' },
+  { label: 'Resume', href: '/resume.pdf' },
 ];

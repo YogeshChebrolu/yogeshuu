@@ -3,12 +3,11 @@ import { SITE, SOCIALS } from '../config';
 const year = new Date().getFullYear();
 ---
 
-<footer class="py-8 border-t border-line text-xs text-fg-dim">
-  <div class="flex flex-wrap items-center justify-between gap-3">
-    <p>
-      <span class="text-accent">#</span>
-      {SITE.name} · {year}
-    </p>
+<footer class="border-t border-line mt-16">
+  <div
+    class="max-w-3xl mx-auto px-5 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-3 text-sm text-fg-muted"
+  >
+    <p>© {year} {SITE.name}</p>
     <p class="flex items-center gap-4">
       {
         SOCIALS.map((s) => (
@@ -16,13 +15,13 @@ const year = new Date().getFullYear();
             href={s.href}
             target="_blank"
             rel="me noopener"
-            class="no-underline hover:text-accent transition-colors"
+            class="no-underline hover:text-fg transition-colors"
           >
             {s.label}
           </a>
         ))
       }
-      <a href="/rss.xml" class="no-underline hover:text-accent transition-colors"
+      <a href="/rss.xml" class="no-underline hover:text-fg transition-colors"
         >rss</a
       >
     </p>

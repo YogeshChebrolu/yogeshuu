@@ -1,24 +1,22 @@
 ---
 /*
- * Home-page projects section — a prompt-line header over a grid of ProjectCards.
- * Spec: docs/design/projects-grid.md
+ * Home-page "Works" section — a section heading over a grid of ProjectCards.
  */
-import { SITE, PROJECTS } from '../config';
+import { PROJECTS } from '../config';
 import ProjectCard from './ProjectCard.astro';
-const prompt = `${SITE.user}@${SITE.host}`;
 ---
 
-<section class="mt-12" aria-label="Projects">
-  <h2 class="text-sm text-fg-dim mb-3">
-    <span class="text-accent">{prompt}</span>:<span class="text-accent-2">~</span
-    >$ <span class="text-fg">ls ./projects</span>
-  </h2>
+<section id="works" class="scroll-mt-20 mt-20 sm:mt-24" aria-label="Works">
+  <div class="flex items-baseline justify-between">
+    <h2 class="text-xl font-bold tracking-tight text-fg">Works</h2>
+    <span class="text-sm text-fg-muted">Selected projects</span>
+  </div>
 
   {
     PROJECTS.length === 0 ? (
-      <p class="text-fg-dim text-sm py-6"># no projects yet</p>
+      <p class="text-fg-muted text-sm py-6">No projects yet.</p>
     ) : (
-      <div class="grid gap-4 sm:grid-cols-2">
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
         {PROJECTS.map((p) => (
           <ProjectCard
             name={p.name}
