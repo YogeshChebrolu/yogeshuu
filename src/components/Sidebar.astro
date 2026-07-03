@@ -64,6 +64,8 @@ const isActive = (href: string) => {
             return (
               <a
                 href={item.href}
+                data-nav-link
+                data-href={item.href}
                 target={external ? '_blank' : undefined}
                 rel={external ? 'noopener' : undefined}
                 class:list={[
@@ -111,7 +113,7 @@ const isActive = (href: string) => {
   (() => {
     if (window.location.pathname !== '/') return;
     const links = document.querySelectorAll('[data-nav-link]');
-    const sections = ['home', 'experience', 'works', 'writing']
+    const sections = ['home', 'experience', 'works', 'about', 'writing']
       .map((id) => document.getElementById(id))
       .filter(Boolean);
     if (!sections.length || !links.length) return;

@@ -123,12 +123,56 @@ export const EXPERIENCE: {
   },
 ];
 
+/** Short intro shown at the top of the home page About section. */
+export const ABOUT_INTRO =
+  "Hi, I'm Yogesh 👋 — an AI Engineer building multi-modal AI systems and agentic workflows. I mostly automate my own life with them.";
+
+/**
+ * Tools/technologies shown as icons in the About section.
+ * `slug` maps to a Simple Icons name (served via cdn.simpleicons.org).
+ */
+export const TOOLS: { name: string; slug: string }[] = [
+  { name: 'Python', slug: 'python' },
+  { name: 'TypeScript', slug: 'typescript' },
+  { name: 'JavaScript', slug: 'javascript' },
+  { name: 'PostgreSQL', slug: 'postgresql' },
+  { name: 'MySQL', slug: 'mysql' },
+  { name: 'React', slug: 'react' },
+  { name: 'Next.js', slug: 'nextdotjs' },
+  { name: 'FastAPI', slug: 'fastapi' },
+  { name: 'Hono', slug: 'hono' },
+  { name: 'Convex', slug: 'convex' },
+  { name: 'Supabase', slug: 'supabase' },
+  { name: 'Tailwind CSS', slug: 'tailwindcss' },
+  { name: 'LangChain', slug: 'langchain' },
+  { name: 'LangGraph', slug: 'langgraph' },
+  { name: 'Pydantic AI', slug: 'pydantic' },
+  { name: 'CrewAI', slug: 'crewai' },
+  { name: 'PyTorch', slug: 'pytorch' },
+  { name: 'Anthropic', slug: 'anthropic' },
+  { name: 'Docker', slug: 'docker' },
+  { name: 'Git', slug: 'git' },
+  { name: 'GitHub', slug: 'github' },
+];
+
+/** Skill areas without a brand icon — shown as plain text beneath the tools grid. */
+export const FOCUS_AREAS = [
+  'AI SDK',
+  'MCP',
+  'RAG',
+  'NLP',
+  'Deep Learning',
+  'Prompt Engineering',
+  'AWS',
+  'CI/CD',
+];
+
 /** Sidebar navigation. Hash links jump to sections on the home page. */
 export const NAV: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Experience', href: '/#experience' },
   { label: 'Works', href: '/#works' },
-  { label: 'About', href: '/about' },
+  { label: 'About', href: '/#about' },
   { label: 'Writing', href: '/#writing' },
   { label: 'Resume', href: '/resume.pdf' },
 ];

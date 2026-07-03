@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import Experience from '../components/Experience.astro';
 import Projects from '../components/Projects.astro';
+import About from '../components/About.astro';
 import PostCard from '../components/PostCard.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
@@ -17,6 +18,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   <Experience />
 
   <Projects />
+
+  <About />
 
   <section id="writing" class="scroll-mt-40 py-6">
     <h2 class="font-serif-label text-lg text-fg py-5">Writing</h2>

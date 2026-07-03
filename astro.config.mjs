@@ -8,6 +8,9 @@ export default defineConfig({
   // TODO: change this to your real domain before deploying
   site: 'https://example.com',
   integrations: [sitemap()],
+  redirects: {
+    '/about': '/#about',
+  },
   vite: {
     plugins: [tailwindcss()],
   },

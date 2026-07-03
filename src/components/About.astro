@@ -1,0 +1,56 @@
+---
+import { ABOUT_INTRO, TOOLS, FOCUS_AREAS, SOCIALS } from '../config';
+---
+
+<section id="about" class="scroll-mt-40 py-6">
+  <h2 class="font-serif-label text-lg text-fg py-5">About</h2>
+
+  <p class="text-sm text-fg-dim leading-relaxed max-w-md">{ABOUT_INTRO}</p>
+
+  <div class="mt-6 flex flex-wrap gap-3">
+    {
+      TOOLS.map((t) => (
+        <div class="group flex flex-col items-center gap-1.5 w-14" title={t.name}>
+          <div class="grid place-items-center h-11 w-11 rounded-lg border border-line bg-bg-soft transition-colors group-hover:border-fg-muted">
+            <img
+              src={`https://cdn.simpleicons.org/${t.slug}/9f9fa9`}
+              alt={t.name}
+              width="20"
+              height="20"
+              loading="lazy"
+              class="opacity-80 transition-opacity group-hover:opacity-100"
+            />
+          </div>
+          <span class="text-[10px] text-fg-muted text-center leading-tight">{t.name}</span>
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    FOCUS_AREAS.length > 0 && (
+      <div class="mt-5 flex flex-wrap gap-2">
+        {FOCUS_AREAS.map((f) => (
+          <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-fg-muted">
+            {f}
+          </span>
+        ))}
+      </div>
+    )
+  }
+
+  <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+    {
+      SOCIALS.map((s) => (
+        <a
+          href={s.href}
+          target="_blank"
+          rel="me noopener"
+          class="text-fg-dim no-underline hover:text-fg transition-colors"
+        >
+          {s.label}
+        </a>
+      ))
+    }
+  </div>
+</section>
