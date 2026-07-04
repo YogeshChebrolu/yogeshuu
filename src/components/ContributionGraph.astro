@@ -5,236 +5,184 @@ interface Props {
   username: string;
   data: ContributionData | null;
 }
-
 const { username, data } = Astro.props;
 
-const LEVEL_OPACITY = ['0.06', '0.25', '0.45', '0.7', '1'];
+// GitHub's own 0-4 buckets, mapped to increasing opacity of the same fg color
+// so levels stay clearly distinct on the dark theme.
+const LEVEL_OPACITY = [0.06, 0.25, 0.45, 0.7, 1] as const;
 
-const MS_PER_DAY = 86_400_000;
+type Cell = { date: string; level: number; tooltip: string } | null;
 
-// Bigger defaults so the heatmap feels less tiny on larger screens.
-const DEFAULT_CELL = 12;
-const DEFAULT_GAP = 3;
-
-// Allow the grid to grow larger before clamping.
-const MIN_CELL = 7;
-const MAX_CELL = 16;
-
-type DayCell = {
-  date: string;
-  level: number;
-  tooltip: string;
-};
-
-type GridCell = DayCell | null;
-type Week = GridCell[];
-
-const formatMonth = (d: Date) =>
-  d.toLocaleDateString('en-US', {
-    month: 'short',
-    timeZone: 'UTC',
-  });
-
-const toUTCDate = (dateStr: string) => new Date(`${dateStr}T00:00:00Z`);
-
-let weeks: Week[] = [];
+let weeks: Cell[][] = [];
 let monthLabels: { index: number; label: string }[] = [];
 
-if (data?.days?.length) {
-  const daysByDate = new Map<string, DayCell>();
-  let minDateStr = data.days[0].date;
-  let maxDateStr = data.days[0].date;
-
-  for (const day of data.days) {
-    daysByDate.set(day.date, day);
-
-    if (day.date < minDateStr) minDateStr = day.date;
-    if (day.date > maxDateStr) maxDateStr = day.date;
-  }
-
-  const first = toUTCDate(minDateStr);
-  const last = toUTCDate(maxDateStr);
-
+if (data) {
+  // GitHub's calendar is a grid of weeks (columns) × weekdays (rows, Sun→Sat).
+  // Anchor the grid to the Sunday on/before the first day so every day lands
+  // in a deterministic (week, weekday) slot regardless of gaps in the data.
+  const first = new Date(`${data.days[0].date}T00:00:00Z`);
   const gridStart = new Date(first);
   gridStart.setUTCDate(first.getUTCDate() - first.getUTCDay());
-  gridStart.setUTCHours(0, 0, 0, 0);
 
-  const gridEnd = new Date(last);
-  gridEnd.setUTCDate(last.getUTCDate() + (6 - last.getUTCDay()));
-  gridEnd.setUTCHours(0, 0, 0, 0);
+  const dayMs = 86400000;
+  let maxWeek = 0;
+  const slotted: { week: number; weekday: number; day: (typeof data.days)[number] }[] = [];
 
-  const totalDays = Math.round((gridEnd.getTime() - gridStart.getTime()) / MS_PER_DAY) + 1;
-  const totalWeeks = Math.ceil(totalDays / 7);
-
-  weeks = Array.from({ length: totalWeeks }, () => Array<GridCell>(7).fill(null));
-
-  for (let i = 0; i < totalDays; i++) {
-    const current = new Date(gridStart);
-    current.setUTCDate(gridStart.getUTCDate() + i);
-
-    const dateStr = current.toISOString().slice(0, 10);
-    const weekIndex = Math.floor(i / 7);
-    const dayIndex = current.getUTCDay();
-
-    weeks[weekIndex][dayIndex] = daysByDate.get(dateStr) ?? null;
+  for (const day of data.days) {
+    const d = new Date(`${day.date}T00:00:00Z`);
+    const week = Math.floor((d.getTime() - gridStart.getTime()) / (7 * dayMs));
+    if (week < 0) continue;
+    maxWeek = Math.max(maxWeek, week);
+    slotted.push({ week, weekday: d.getUTCDay(), day });
   }
 
-  const rawMonthLabels: { index: number; label: string }[] = [];
-  let lastMonthKey = '';
+  weeks = Array.from({ length: maxWeek + 1 }, () => Array<Cell>(7).fill(null));
+  for (const { week, weekday, day } of slotted) {
+    weeks[week][weekday] = day;
+  }
 
-  for (let i = 0; i < totalDays; i++) {
-    const current = new Date(gridStart);
-    current.setUTCDate(gridStart.getUTCDate() + i);
-
-    const monthKey = `${current.getUTCFullYear()}-${current.getUTCMonth()}`;
-    if (monthKey !== lastMonthKey) {
-      rawMonthLabels.push({
-        index: Math.floor(i / 7),
-        label: formatMonth(current),
+  // One month label per column where the month first appears, then drop any
+  // label sitting right on top of the next one (a thin sliver at the edges).
+  let lastMonth = -1;
+  weeks.forEach((week, i) => {
+    const firstDay = week.find((d): d is NonNullable<Cell> => d !== null);
+    if (!firstDay) return;
+    const month = new Date(`${firstDay.date}T00:00:00Z`).getUTCMonth();
+    if (month !== lastMonth) {
+      monthLabels.push({
+        index: i,
+        label: new Date(`${firstDay.date}T00:00:00Z`).toLocaleDateString('en-US', {
+          month: 'short',
+          timeZone: 'UTC',
+        }),
       });
-      lastMonthKey = monthKey;
+      lastMonth = month;
     }
-  }
-
-  // Keep labels readable when month boundaries are very close together.
-  monthLabels = rawMonthLabels.filter((m, i) => {
-    const prev = rawMonthLabels[i - 1];
-    const next = rawMonthLabels[i + 1];
-
-    if (rawMonthLabels.length <= 2) return true;
-    if (i === 0) return !next || next.index - m.index >= 2;
-    if (i === rawMonthLabels.length - 1) return !prev || m.index - prev.index >= 2;
-
-    return m.index - prev.index >= 2 && next.index - m.index >= 2;
   });
+  monthLabels = monthLabels.filter(
+    (m, i) => i === monthLabels.length - 1 || monthLabels[i + 1].index - m.index >= 3
+  );
 }
 
+const CELL = 11;
+const GAP = 3;
+const STEP = CELL + GAP;
+const HEADER = CELL + GAP + 2; // vertical space reserved for the month row
 const WEEKDAY_LABELS: Record<number, string> = { 1: 'Mon', 3: 'Wed', 5: 'Fri' };
 ---
 
-{data ? (
-  <div
-    class="contrib-heatmap w-full max-w-full overflow-hidden"
-    data-contrib-heatmap
-    data-week-count={weeks.length}
-    data-cell-default={DEFAULT_CELL}
-    data-gap-default={DEFAULT_GAP}
-    data-cell-min={MIN_CELL}
-    data-cell-max={MAX_CELL}
-    style={`--cell-size:${DEFAULT_CELL}px; --gap-size:${DEFAULT_GAP}px;`}
-  >
-    <div class="grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4 gap-y-2 sm:gap-x-5">
-      <div
-        data-weekday-labels
-        class="flex shrink-0 flex-col text-[10px] text-fg-muted"
-        style="gap: var(--gap-size); margin-top: calc(var(--cell-size) + var(--gap-size) + 2px);"
-      >
-        {Array.from({ length: 7 }, (_, i) => (
-          <div style={`height:var(--cell-size); line-height:var(--cell-size)`}>
-            {WEEKDAY_LABELS[i] ?? ''}
-          </div>
-        ))}
-      </div>
-
-      <div class="min-w-0 w-full">
-        <div class="relative h-[calc(var(--cell-size)+var(--gap-size)+2px)] w-full text-[10px] text-fg-muted">
-          {monthLabels.map((m) => (
-            <span
-              class="absolute top-0 whitespace-nowrap"
-              style={`left:calc(${m.index} * (var(--cell-size) + var(--gap-size)))`}
-            >
-              {m.label}
-            </span>
+{
+  data ? (
+    <div
+      class="cg-scroll overflow-x-auto"
+      style={`--cell:${CELL}px; --gap:${GAP}px; --step:${STEP}px; --header:${HEADER}px`}
+    >
+      <div class="inline-flex gap-2">
+        {/* weekday labels */}
+        <div
+          class="flex shrink-0 flex-col text-[10px] leading-none text-fg-muted"
+          style="gap:var(--gap); margin-top:var(--header)"
+        >
+          {Array.from({ length: 7 }, (_, i) => (
+            <div style="height:var(--cell); line-height:var(--cell)">{WEEKDAY_LABELS[i] ?? ''}</div>
           ))}
         </div>
 
-        <div
-          data-heatmap-grid
-          class="inline-flex w-full max-w-full items-start overflow-hidden"
-          style="gap: var(--gap-size);"
-        >
-          {weeks.map((week, weekIndex) => {
-            const isRightEdge = weekIndex >= Math.max(0, weeks.length - 3);
+        <div>
+          {/* month labels */}
+          <div class="relative text-[10px] text-fg-muted" style="height:var(--header)">
+            {monthLabels.map((m) => (
+              <span class="absolute top-0" style={`left:${m.index * STEP}px`}>
+                {m.label}
+              </span>
+            ))}
+          </div>
 
-            return (
-              <div class="flex flex-col" style="gap: var(--gap-size);">
-                {week.map((day) =>
+          {/* week columns */}
+          <div class="flex" style="gap:var(--gap)">
+            {weeks.map((week) => (
+              <div class="flex flex-col" style="gap:var(--gap)">
+                {week.map((day, weekday) =>
                   day ? (
-                    <div class="group/cell relative" style="width: var(--cell-size); height: var(--cell-size);">
+                    <div
+                      class="group/cell relative"
+                      style="width:var(--cell); height:var(--cell)"
+                    >
                       <span
                         aria-label={day.tooltip}
-                        title={day.tooltip}
-                        class="block h-full w-full rounded-[2px] bg-fg cursor-default"
+                        class="block h-full w-full rounded-[2px] bg-fg transition-transform duration-100 group-hover/cell:scale-125"
                         style={`opacity:${LEVEL_OPACITY[day.level] ?? LEVEL_OPACITY[0]}`}
                       />
                       <span
                         role="tooltip"
-                        class:list={{
-                          'pointer-events-none absolute bottom-full mb-1.5 z-20 whitespace-nowrap rounded-md border border-line bg-bg-card px-2 py-1 text-[11px] text-fg opacity-0 shadow-lg transition-all duration-100 group-hover/cell:opacity-100 group-hover/cell:scale-100 scale-95':
-                            true,
-                          'left-1/2 -translate-x-1/2': !isRightEdge,
-                          'right-0 translate-x-0': isRightEdge,
-                        }}
+                        class:list={[
+                          'pointer-events-none absolute left-1/2 z-20 -translate-x-1/2 scale-95 whitespace-nowrap rounded-md border border-line bg-bg-card px-2 py-1 text-[11px] text-fg opacity-0 shadow-lg transition-all duration-100 group-hover/cell:scale-100 group-hover/cell:opacity-100',
+                          // Top row's upward tooltip gets clipped by the scroll
+                          // container, so flip it below the cell instead.
+                          weekday === 0 ? 'top-full mt-2' : 'bottom-full mb-2',
+                        ]}
                       >
                         {day.tooltip}
                       </span>
                     </div>
                   ) : (
-                    <span class="block" style="width: var(--cell-size); height: var(--cell-size);" />
+                    <span class="block" style="width:var(--cell); height:var(--cell)" />
                   )
                 )}
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* legend */}
+          <div class="mt-3 flex items-center gap-1.5 text-[10px] text-fg-muted">
+            <span class="mr-0.5">Less</span>
+            {LEVEL_OPACITY.map((opacity) => (
+              <span
+                class="block rounded-[2px] bg-fg"
+                style={`width:var(--cell); height:var(--cell); opacity:${opacity}`}
+              />
+            ))}
+            <span class="ml-0.5">More</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-) : (
-  <p class="text-sm text-fg-muted">
-    Couldn't load GitHub contributions right now —{' '}
-    <a
-      href={`https://github.com/${username}`}
-      target="_blank"
-      rel="noopener"
-      class="underline hover:text-fg"
-    >
-      see the profile directly
-    </a>
-    .
-  </p>
-)}
+  ) : (
+    <p class="text-sm text-fg-muted">
+      Couldn't load GitHub contributions right now —{' '}
+      <a
+        href={`https://github.com/${username}`}
+        target="_blank"
+        rel="noopener"
+        class="underline hover:text-fg"
+      >
+        see the profile directly
+      </a>
+      .
+    </p>
+  )
+}
 
-<script is:inline>
-  const roots = document.querySelectorAll('[data-contrib-heatmap]');
+<style>
+  /* Hide the scrollbar on the graph — it still scrolls horizontally on small
+     screens, just without the chrome the design doesn't want. */
+  .cg-scroll {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* old Edge/IE */
+  }
+  .cg-scroll::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+</style>
 
-  const fitHeatmap = (root) => {
-    const labelCol = root.querySelector('[data-weekday-labels]');
-    if (!labelCol) return;
-
-    const weekCount = Number(root.dataset.weekCount || 0);
-    const cellMin = Number(root.dataset.cellMin || 7);
-    const cellMax = Number(root.dataset.cellMax || 16);
-    const gap = Number(root.dataset.gapDefault || 3);
-
-    const rootWidth = root.clientWidth;
-    const labelWidth = labelCol.getBoundingClientRect().width;
-
-    // A little extra breathing room so it does not crash into the edges.
-    const available = Math.max(0, rootWidth - labelWidth - 20);
-
-    if (!weekCount || available <= 0) return;
-
-    const computed = Math.floor((available - (weekCount - 1) * gap) / weekCount);
-    const cell = Math.max(cellMin, Math.min(cellMax, computed));
-
-    root.style.setProperty('--cell-size', `${cell}px`);
-    root.style.setProperty('--gap-size', `${gap}px`);
-  };
-
-  roots.forEach((root) => {
-    const ro = new ResizeObserver(() => fitHeatmap(root));
-    ro.observe(root);
-    requestAnimationFrame(() => fitHeatmap(root));
-  });
+<script>
+  // On narrow viewports the graph overflows; start it scrolled to the most
+  // recent week so the newest activity is what you see first.
+  function alignGraphs() {
+    document.querySelectorAll<HTMLElement>('.cg-scroll').forEach((el) => {
+      el.scrollLeft = el.scrollWidth;
+    });
+  }
+  alignGraphs();
+  window.addEventListener('resize', alignGraphs);
 </script>
