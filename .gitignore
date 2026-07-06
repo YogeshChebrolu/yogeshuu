@@ -19,3 +19,5 @@ pnpm-debug.log*
 # macOS / editor
 .DS_Store
 *.log
+
+.vercel
