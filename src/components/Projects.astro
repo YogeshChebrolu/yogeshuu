@@ -5,6 +5,8 @@
  */
 import { PROJECTS } from '../config';
 import ProjectCard from './ProjectCard.astro';
+
+const featuredProjects = PROJECTS.slice(0, 3);
 ---
 
 <section id="works" class="scroll-mt-40 py-6" aria-label="Works">
@@ -14,18 +16,32 @@ import ProjectCard from './ProjectCard.astro';
     PROJECTS.length === 0 ? (
       <p class="text-fg-muted text-sm py-6">No projects yet.</p>
     ) : (
-      <div class="flex flex-col gap-10">
-        {PROJECTS.map((p) => (
-          <ProjectCard
-            name={p.name}
-            description={p.description}
-            image={p.image}
-            tags={p.tags}
-            repo={p.repo}
-            demo={p.demo}
-          />
-        ))}
-      </div>
+      <>
+        <div class="flex flex-col gap-10">
+          {featuredProjects.map((p) => (
+            <ProjectCard
+              name={p.name}
+              description={p.description}
+              image={p.image}
+              tags={p.tags}
+              repo={p.repo}
+              demo={p.demo}
+            />
+          ))}
+        </div>
+
+        {PROJECTS.length > featuredProjects.length && (
+          <div class="mt-8">
+            <a
+              href="/projects/"
+              class="inline-flex h-10 items-center gap-2 rounded-lg border border-line px-4 text-sm text-fg-dim transition-colors hover:border-fg-muted hover:text-fg"
+            >
+              <span>See all projects</span>
+              <span aria-hidden="true">&#8594;</span>
+            </a>
+          </div>
+        )}
+      </>
     )
   }
 </section>

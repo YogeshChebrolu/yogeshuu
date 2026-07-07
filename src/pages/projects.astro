@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { PROJECTS } from '../config';
+---
+
+<BaseLayout title="Projects" description="All projects by Yogesh.">
+  <section class="py-6" aria-label="Projects">
+    <h1 class="font-serif-label text-2xl text-fg py-5">Projects</h1>
+
+    {
+      PROJECTS.length === 0 ? (
+        <p class="text-fg-muted text-sm py-6">No projects yet.</p>
+      ) : (
+        <div class="flex flex-col gap-10">
+          {PROJECTS.map((p) => (
+            <ProjectCard
+              name={p.name}
+              description={p.description}
+              image={p.image}
+              tags={p.tags}
+              repo={p.repo}
+              demo={p.demo}
+            />
+          ))}
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

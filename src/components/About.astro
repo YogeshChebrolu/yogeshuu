@@ -27,10 +27,11 @@ const ICONS: Record<string, string> = {
 
   <p class="text-sm text-fg-dim leading-relaxed max-w-md">{ABOUT_INTRO}</p>
 
-  <div class="mt-6 flex flex-wrap gap-2">
+  <div class="mt-6 flex flex-wrap gap-2" data-pill-group>
     {
       TOOLS.map((t) => (
         <div
+          data-pill
           class="group flex items-center h-11 rounded-full border border-line bg-bg-soft overflow-hidden transition-colors hover:border-fg-muted"
         >
           <span class="grid place-items-center h-11 w-11 shrink-0">
@@ -43,8 +44,11 @@ const ICONS: Record<string, string> = {
             />
           </span>
           <span class="grid grid-cols-[0fr] group-hover:grid-cols-[1fr] transition-[grid-template-columns] duration-300 ease-out">
-            <span class="overflow-hidden whitespace-nowrap text-sm text-fg-dim">
-              <span class="inline-block pr-4">{t.name}</span>
+            <span
+              data-pill-label
+              class="block overflow-hidden text-ellipsis whitespace-nowrap text-sm text-fg-dim"
+            >
+              <span data-pill-text class="inline-block pr-4">{t.name}</span>
             </span>
           </span>
         </div>
@@ -54,9 +58,12 @@ const ICONS: Record<string, string> = {
 
   {
     FOCUS_AREAS.length > 0 && (
-      <div class="mt-5 flex flex-wrap gap-2">
+      <div class="mt-5 flex flex-wrap gap-2" data-pill-group>
         {FOCUS_AREAS.map((f) => (
-          <div class="group flex items-center h-11 rounded-full border border-line bg-bg-soft overflow-hidden transition-colors hover:border-fg-muted">
+          <div
+            data-pill
+            class="group flex items-center h-11 rounded-full border border-line bg-bg-soft overflow-hidden transition-colors hover:border-fg-muted"
+          >
             <span class="grid place-items-center h-11 w-11 shrink-0">
               {f.slug ? (
                 <img
@@ -83,8 +90,11 @@ const ICONS: Record<string, string> = {
               )}
             </span>
             <span class="grid grid-cols-[0fr] group-hover:grid-cols-[1fr] transition-[grid-template-columns] duration-300 ease-out">
-              <span class="overflow-hidden whitespace-nowrap text-sm text-fg-dim">
-                <span class="inline-block pr-4">{f.name}</span>
+              <span
+                data-pill-label
+                class="block overflow-hidden text-ellipsis whitespace-nowrap text-sm text-fg-dim"
+              >
+                <span data-pill-text class="inline-block pr-4">{f.name}</span>
               </span>
             </span>
           </div>
@@ -114,3 +124,105 @@ const ICONS: Record<string, string> = {
     </p>
   </div>
 </section>
+
+<script>
+  // ---------------------------------------------------------------------
+  // Flicker-proof expanding pills via slack-aware row packing.
+  //
+  // Instead of letting flex-wrap decide where rows break, we pack the
+  // pills into explicit rows ourselves, with one rule: a pill only joins
+  // a row if (collapsed widths of the row) + (widest label in the row,
+  // including this pill's) still fits in the container. That guarantees
+  // that when ANY pill in the row expands, the row absorbs it without
+  // wrapping — so the hovered pill never jumps lines and never flickers.
+  //
+  // Everything is measured at runtime (labels have a real width even
+  // while collapsed), and we re-pack on resize and after fonts load, so
+  // nothing is hardcoded.
+  // ---------------------------------------------------------------------
+  const GAP = 8; // gap-2
+  const SLACK = 2; // subpixel safety margin
+
+  document.querySelectorAll('[data-pill-group]').forEach((groupEl) => {
+    const group = groupEl as HTMLElement;
+    const pills = Array.from(group.querySelectorAll<HTMLElement>('[data-pill]'));
+    if (pills.length === 0) return;
+
+    const labelWidth = (pill: HTMLElement) => {
+      const text = pill.querySelector<HTMLElement>('[data-pill-text]');
+      return text ? Math.ceil(text.getBoundingClientRect().width) : 0;
+    };
+
+    const pack = () => {
+      // Flatten: move pills back into the group, drop old row wrappers.
+      pills.forEach((p) => group.appendChild(p));
+      group.querySelectorAll('[data-pill-line]').forEach((l) => l.remove());
+
+      const containerW = group.clientWidth;
+      const collapsedW = Math.ceil(pills[0].getBoundingClientRect().width) || 46;
+
+      let line: HTMLElement | null = null;
+      let lineW = 0; // sum of collapsed pill widths + gaps in current row
+      let maxLabel = 0; // widest label in current row
+      let count = 0;
+
+      const startLine = () => {
+        line = document.createElement('div');
+        line.setAttribute('data-pill-line', '');
+        line.className = 'flex gap-2 w-full';
+        group.appendChild(line);
+        lineW = 0;
+        maxLabel = 0;
+        count = 0;
+      };
+
+      startLine();
+      pills.forEach((pill) => {
+        const lw = labelWidth(pill);
+        if (count > 0) {
+          const tryW = lineW + GAP + collapsedW;
+          const tryMax = Math.max(maxLabel, lw);
+          if (tryW + tryMax + SLACK > containerW) startLine();
+        }
+        line!.appendChild(pill);
+        lineW = count === 0 ? collapsedW : lineW + GAP + collapsedW;
+        maxLabel = Math.max(maxLabel, lw);
+        count++;
+      });
+    };
+
+    // Safety net: if a label is somehow wider than the whole container
+    // (or a measurement drifts by a pixel), cap it at the row edge with
+    // an ellipsis so a wrap remains impossible.
+    pills.forEach((pill) => {
+      const label = pill.querySelector<HTMLElement>('[data-pill-label]');
+      const text = pill.querySelector<HTMLElement>('[data-pill-text]');
+      if (!label || !text) return;
+      pill.addEventListener('pointerenter', () => {
+        const rect = pill.getBoundingClientRect();
+        const available = Math.floor(
+          group.getBoundingClientRect().right - rect.left - rect.width - SLACK
+        );
+        const natural = Math.ceil(text.getBoundingClientRect().width);
+        label.style.maxWidth = natural > available ? `${Math.max(available, 0)}px` : '';
+      });
+    });
+
+    pack();
+
+    // Web fonts can change label widths after first paint.
+    if (document.fonts?.ready) document.fonts.ready.then(pack);
+
+    let t: ReturnType<typeof setTimeout>;
+    let lastW = group.clientWidth;
+    window.addEventListener('resize', () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        if (group.clientWidth !== lastW) {
+          lastW = group.clientWidth;
+          pack();
+        }
+      }, 120);
+    });
+  });
+</script>
