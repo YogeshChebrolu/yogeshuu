@@ -1,0 +1,44 @@
+{
+  "redirects": [
+    {
+      "source": "/alpha-brain",
+      "destination": "https://alpha-brain-five.vercel.app/",
+      "statusCode": 308
+    },
+    {
+      "source": "/alpha-brain/",
+      "destination": "https://alpha-brain-five.vercel.app/",
+      "statusCode": 308
+    },
+    {
+      "source": "/intrust",
+      "destination": "https://in-trust-web.vercel.app",
+      "statusCode": 308
+    },
+    {
+      "source": "/intrust/",
+      "destination": "https://in-trust-web.vercel.app",
+      "statusCode": 308
+    },
+    {
+      "source": "/youtube-rag",
+      "destination": "https://github.com/YogeshChebrolu/YT_RAG",
+      "statusCode": 308
+    },
+    {
+      "source": "/youtube-rag/",
+      "destination": "https://github.com/YogeshChebrolu/YT_RAG",
+      "statusCode": 308
+    },
+    {
+      "source": "/transformer-pytorch",
+      "destination": "https://github.com/YogeshChebrolu/Transformers-Implementation-in-PyTorch",
+      "statusCode": 308
+    },
+    {
+      "source": "/transformer-pytorch/",
+      "destination": "https://github.com/YogeshChebrolu/Transformers-Implementation-in-PyTorch",
+      "statusCode": 308
+    }
+  ]
+}
