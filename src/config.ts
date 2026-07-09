@@ -90,6 +90,12 @@ export const PROJECTS: {
 ];
 
 /** Work experience, shown as a timeline in the home page Experience section. */
+type ExperiencePoint =
+  | string
+  | {
+      parts: (string | { code: string })[];
+    };
+
 export const EXPERIENCE: {
   role: string;
   org: string;
@@ -98,7 +104,8 @@ export const EXPERIENCE: {
   type?: string;
   current?: boolean;
   summary?: string;
-  points?: string[];
+  points?: ExperiencePoint[];
+  detailPoints?: ExperiencePoint[];
   stack: string[];
 }[] = [
   {
@@ -108,10 +115,23 @@ export const EXPERIENCE: {
     period: 'Jul 2025 – Mar 2026',
     type: 'Internship',
     points: [
-      'Built Sandbox Agents — agents that control a browser and take autonomous actions to automate repetitive tasks.',
-      'Worked on agent evals & benchmarking and an Email Agent.',
+      'Built browser-controlling sandbox agents that autonomously execute repetitive tasks end-to-end.',
+      "Shipped an LLM-powered failure evaluation pipeline and an email interface letting users trigger agents by CC'ing Gmail threads.",
     ],
-    stack: ['TypeScript', 'Python', 'FastAPI', 'Postgres'],
+    detailPoints: [
+      'Decoupled task evaluation from the agent runtime into a standalone AWS Lambda: a Gemini 2.0 Flash pipeline that analyzes completed task runs in 15-message windows, classifies failures (auth misses, tool/API errors, incomplete inputs), and alerts developers in Slack via Axiom — cutting failure detection from manual review to minutes.',
+      {
+        parts: [
+          "Eliminated the platform's top failure mode by adding tool introspection (",
+          { code: 'get_tool_context' },
+          ') to the user-facing agent, so it collects all required credentials and inputs before triggering an automation run.',
+        ],
+      },
+      'Built a new email channel using AgentMail webhooks — users can write, CC, or forward Gmail threads to the agent to trigger automations and receive results in-thread, with full parity to the web experience.',
+      "Rebuilt the entire communication agent module from scratch in TypeScript/Next.js during the company's migration off Python/FastAPI.",
+      'Stress-tested the browser agent loop against 500+ manually designed evaluation tasks and shipped PRs fixing failure modes surfaced by testing; built per-run token cost tracking persisted to Supabase.',
+    ],
+    stack: ['TypeScript', 'Next.js', 'Python', 'FastAPI', 'AWS (Lambda)', 'Supabase'],
   },
   {
     role: 'AI Research Intern',

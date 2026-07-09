@@ -53,10 +53,51 @@ import { EXPERIENCE } from '../config';
                 {job.points.map((point) => (
                   <li class="text-sm text-fg-dim leading-relaxed flex gap-2">
                     <span class="text-fg-muted">·</span>
-                    <span>{point}</span>
+                    <span>
+                      {typeof point === 'string'
+                        ? point
+                        : point.parts.map((part) =>
+                            typeof part === 'string' ? (
+                              part
+                            ) : (
+                              <code class="rounded border border-line bg-bg-soft px-1 py-0.5 font-mono text-[0.85em] text-fg-dim">
+                                {part.code}
+                              </code>
+                            )
+                          )}
+                    </span>
                   </li>
                 ))}
               </ul>
+            )}
+
+            {job.detailPoints && job.detailPoints.length > 0 && (
+              <details class="experience-detail mt-2">
+                <summary class="inline-flex cursor-pointer list-none rounded-sm text-xs text-fg-muted transition-colors hover:text-fg-dim focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-muted">
+                  <span class="more-label">→ more detail</span>
+                  <span class="less-label">← less</span>
+                </summary>
+                <ul class="mt-3 space-y-3">
+                  {job.detailPoints.map((point) => (
+                    <li class="text-sm text-fg-dim leading-relaxed flex gap-2">
+                      <span class="text-fg-muted">·</span>
+                      <span>
+                        {typeof point === 'string'
+                          ? point
+                          : point.parts.map((part) =>
+                              typeof part === 'string' ? (
+                                part
+                              ) : (
+                                <code class="rounded border border-line bg-bg-soft px-1 py-0.5 font-mono text-[0.85em] text-fg-dim">
+                                  {part.code}
+                                </code>
+                              )
+                            )}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </details>
             )}
 
             {job.stack.length > 0 && (
@@ -74,3 +115,21 @@ import { EXPERIENCE } from '../config';
     </div>
   </div>
 </section>
+
+<style>
+  .experience-detail summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .experience-detail .less-label {
+    display: none;
+  }
+
+  .experience-detail[open] .more-label {
+    display: none;
+  }
+
+  .experience-detail[open] .less-label {
+    display: inline;
+  }
+</style>
