@@ -6,10 +6,12 @@
  */
 export const SITE = {
   /** Shown in the browser tab and used for SEO / RSS. */
-  title: 'yogesh',
+  title: 'Yogesh Chebrolu',
+  /** Hook used by social link previews on the home page. */
+  socialTitle: 'Yogesh \u2014 Portfolio',
   /** Used by RSS + sitemap. Update to your real domain. */
-  url: 'https://example.com',
-  description: 'Notes on building software.',
+  url: 'https://yogeshuu.vercel.app',
+  description: 'I build full stack apps.',
 
   /** Hero block. */
   name: 'Yogesh',

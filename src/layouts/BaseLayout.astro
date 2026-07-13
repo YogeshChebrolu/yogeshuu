@@ -12,7 +12,9 @@ interface Props {
 
 const { title, description = SITE.description } = Astro.props;
 const pageTitle = title ? `${title} — ${SITE.title}` : SITE.title;
+const socialTitle = title ? pageTitle : SITE.socialTitle;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString();
+const socialImage = new URL('/og-card-v2.png', Astro.site ?? SITE.url).toString();
 ---
 
 <!doctype html>
@@ -35,10 +37,20 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString()
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={pageTitle} />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:title" content={socialTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="Yogesh - Portfolio. I build full stack apps." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@yogesh_chebrolu" />
+    <meta name="twitter:title" content={socialTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content="Yogesh - Portfolio. I build full stack apps." />
 
     <link
       rel="alternate"

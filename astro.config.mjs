@@ -7,8 +7,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: change this to your real domain before deploying
-  site: 'https://example.com',
+  site: 'https://yogeshuu.vercel.app',
   integrations: [sitemap(), react()],
   redirects: {
     '/about': '/#about',
