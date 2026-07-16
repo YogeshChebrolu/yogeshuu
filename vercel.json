@@ -17,7 +17,7 @@
     },
     {
       "source": "/intrust/",
-      "destination": "https://in-trust-web.vercel.app",
+      "destination": "https://coverwisely-web.vercel.app",
       "statusCode": 308
     },
     {
