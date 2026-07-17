@@ -12,11 +12,21 @@
     },
     {
       "source": "/intrust",
-      "destination": "https://in-trust-web.vercel.app",
+      "destination": "https://coverwisely-web.vercel.app",
       "statusCode": 308
     },
     {
       "source": "/intrust/",
+      "destination": "https://coverwisely-web.vercel.app",
+      "statusCode": 308
+    },
+    {
+      "source": "/covey",
+      "destination": "https://coverwisely-web.vercel.app",
+      "statusCode": 308
+    },
+    {
+      "source": "/covey/",
       "destination": "https://coverwisely-web.vercel.app",
       "statusCode": 308
     },

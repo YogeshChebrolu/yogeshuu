@@ -58,12 +58,12 @@ export const PROJECTS: {
     demo: 'https://alpha-brain-five.vercel.app/login',
   },
   {
-    name: 'InTrust',
+    name: 'Cover Wisely',
     description:
       'AI insurance recommendation engine — RAG pipeline over 300+ IRDAI policies (Pinecone + Qwen3) with a chat-first, citation-verified interface.',
-    image: '/works/intrust.png',
+    image: '/works/covey.png',
     tags: ['llm', 'rag', 'pinecone'],
-    demo: 'https://in-trust-web.vercel.app',
+    demo: 'https://coverwisely-web.vercel.app',
   },
   {
     name: 'YouTube Multi-Modal RAG',
